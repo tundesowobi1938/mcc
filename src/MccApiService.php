@@ -105,4 +105,18 @@ class MccApiService implements MccApiInterface {
   }
 
 
+public function emptylistchanges(){
+  $config = $this->configFactory->get('mccserver.mccconfig');
+  
+  $http_client = \Drupal::httpClient();
+
+  $data = ['key'=>$config->get('service_key')];
+  $response = $http_client->request('POST',$config->get('target_site_url').'/mccserver/emptylistchanges', 
+    ['form_params' => $data] 
+  );
+  return json_decode($response->getBody()->getContents());
+
+}
+
+
 }

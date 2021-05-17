@@ -1,4 +1,11 @@
-
+mccserver.mcc_web_service_controller_emptylistchanges:
+  path: '/mccserver/emptylistchanges'
+  defaults:
+    _controller: '\Drupal\mccserver\Controller\MccWebServiceController::emptylistchanges'
+    _title: 'emptylistchanges'
+  methods:  [POST]
+  requirements:
+    _permission: 'access content'
 mccserver.mcc_web_service_controller_confirm:
   path: '/mccserver/confirm'
   defaults:

@@ -31,6 +31,7 @@ To view the Progress go to the admin area  on the local site :
 
 /admin/config/mccserver/mccconfirmchanges
 
+To get the list of changes Click the button 
 
 ## Update changes on remote site 
 
@@ -39,3 +40,17 @@ go to the admin area on the Remote Site
 /admin/config/system/cron
 
 and click the button run cron
+
+On the Remote site only use cron configure the site.
+Ignore the other Configuration pages.
+
+
+## Managing the Que
+
+In the case that the content is blocked in the queue that the site has not been configured for you can clear the que by going to admin
+
+/admin/config/mccserver/mccconfirmchanges
+
+click on the button Empty List of changes 
+
+

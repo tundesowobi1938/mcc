@@ -33,6 +33,34 @@ class MccWebServiceController extends ControllerBase {
     ]);
   }
 
+ /**
+   * Callback for the API.
+   */
+  public function emptylistchanges() {
+
+
+    $result = \Drupal::database()->query('DELETE FROM queue WHERE name=:name',
+      [':name' => 'request_update_plugin_id']
+    );
+    $result = \Drupal::database()->query('DELETE FROM queue WHERE name=:name',
+      [':name' => 'confirm_changes_plugin_id']
+    );
+    $result = \Drupal::database()->query('DELETE FROM queue WHERE name=:name',
+      [':name' => 'unconfirmed_changes_plugin_id']
+    );
+    $result = \Drupal::database()->query('DELETE FROM queue WHERE name=:name',
+      [':name' => 'mcc_request_change_plugin_id']
+    );
+    $result = \Drupal::database()->query('DELETE FROM queue WHERE name=:name',
+      [':name' => 'confirmed_updates_plugin_id']
+    );
+
+    return new JsonResponse([
+      'name' => 'sync',
+      'method' => 'POST',
+    ]);
+  }
+
   /**
    * Callback for the API.
    */

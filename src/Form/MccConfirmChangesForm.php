@@ -105,9 +105,16 @@ class MccConfirmChangesForm extends FormBase {
 
     $form['request_update'] = [
       '#type' => 'submit',
-      '#title' => $this->t('Update'),
+      '#title' => $this->t('Update List of Changes'),
       '#description' => $this->t('The changes that have not been proccessed'),
-      '#value' => $this->t('Update'),
+      '#value' => $this->t('Update List of Changes'),
+    ];
+
+    $form['request_emptyqueue'] = [
+      '#type' => 'submit',
+      '#title' => $this->t('Empty List of Changes'),
+      '#description' => $this->t('Remove the current changes ffrom the Queue'),
+      '#value' => $this->t('Empty List of Changes'),
     ];
 
     return $form;
@@ -127,7 +134,30 @@ class MccConfirmChangesForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $submit = $form_state->getTriggeringElement()['#value'];
+    if ($submit == 'Empty List of Changes'){
 
+      $result = \Drupal::database()->query('DELETE FROM queue WHERE name=:name',
+        [':name' => 'request_update_plugin_id']
+      );
+      $result = \Drupal::database()->query('DELETE FROM queue WHERE name=:name',
+        [':name' => 'confirm_changes_plugin_id']
+      );
+      $result = \Drupal::database()->query('DELETE FROM queue WHERE name=:name',
+        [':name' => 'unconfirmed_changes_plugin_id']
+      );
+      $result = \Drupal::database()->query('DELETE FROM queue WHERE name=:name',
+        [':name' => 'mcc_request_change_plugin_id']
+      );
+      $result = \Drupal::database()->query('DELETE FROM queue WHERE name=:name',
+        [':name' => 'confirmed_updates_plugin_id']
+      );
+
+      // make request for the changes
+      $mccservice = \Drupal::service('mccserver.mccapi');
+      $response = $mccservice->emptylistchanges();
+
+    }
   }
 
   /* Helper method to format a queue item for display in a summary table.
