@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * @file
+ * Contains mccserver.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function mccserver_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the mccserver module.
+    case 'help.page.mccserver':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('A module to accept requests for changes') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+
+  /**
+   * Common batch processing callback for all operations.
+   */
+  function mccserver_batchProcess(&$context) {
+    
+    // We can't use here the Dependency Injection solution
+    // so we load the necessary services in the other way
+    $queue_factory = \Drupal::service('queue');
+    $queue_manager = \Drupal::service('plugin.manager.queue_worker');
+    
+    // Get the queue implementation for mcc_request_change_plugin_id queue
+    $queue = $queue_factory->get('mcc_request_change_plugin_id');
+    // Get the queue worker
+    $queue_worker = $queue_manager->createInstance('mcc_request_change_plugin_id');
+    
+    // Get the number of items
+    $number_of_queue = ($queue->numberOfItems() < MCC_BATCH_SIZE) ? $queue->numberOfItems() : MCC_BATCH_SIZE;
+    
+    // Repeat $number_of_queue times
+    for ($i = 0; $i < $number_of_queue; $i++) {
+      
+      // Get a queued item
+      if ($item = $queue->claimItem()) {
+       // drupal_set_message(t(" Processing op .".$i));
+        try {
+          // Process it
+          $queue_worker->processItem($item->data);
+          // If everything was correct, delete the processed item from the queue
+          //$queue->deleteItem($item);
+        }
+        catch (SuspendQueueException $e) {
+          // If there was an Exception trown because of an error
+          // Releases the item that the worker could not process.
+          // Another worker can come and process it
+          $queue->releaseItem($item);
+          break;
+        }
+      }
+    }
+  }
+
+  /**
+   * Batch finished callback.
+   */
+  function mccserver_batchFinished($success, $results, $operations) {
+    if ($success) {
+     drupal_set_message(t("TheRequests have successfully sent tot the server."));
+    }
+    else {
+      $error_operation = reset($operations);
+      drupal_set_message(t('An error occurred while processing @operation with arguments : @args', array('@operation' => $error_operation[0], '@args' => print_r($error_operation[0], TRUE))));
+    }
+  }
+

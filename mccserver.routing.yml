@@ -1,0 +1,47 @@
+
+mccserver.mcc_web_service_controller_confirm:
+  path: '/mccserver/confirm'
+  defaults:
+    _controller: '\Drupal\mccserver\Controller\MccWebServiceController::confirm'
+    _title: 'confirm'
+  methods:  [POST]
+  requirements:
+    _permission: 'access content'
+mccserver.mcc_web_service_controller_sync:
+  path: '/mccserver/sync'
+  defaults:
+    _controller: '\Drupal\mccserver\Controller\MccWebServiceController::sync'
+    _title: 'sync'
+  methods:  [POST]
+  requirements:
+    _permission: 'access content'
+mccserver.mcc_config_form:
+  path: '/admin/config/mcc/mccconfig'
+  defaults:
+    _form: '\Drupal\mccserver\Form\MccConfigForm'
+    _title: 'MCCConfigForm'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+mccserver.mcc_request_remote_changes_form:
+  path: '/admin/config/mccserver/mccrequestremotechanges'
+  defaults:
+    _form: '\Drupal\mccserver\Form\MccRequestRemoteChangesForm'
+    _title: 'MccRequestRemoteChangesForm'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+  arguments:
+    - '@config.factory'
+ 
+mccserver.mcc_confirm_changes_form:
+  path: '/admin/config/mccserver/mccconfirmchanges'
+  defaults:
+    _form: '\Drupal\mccserver\Form\MccConfirmChangesForm'
+    _title: 'MccConfirmChangesForm'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE

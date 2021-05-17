@@ -1,0 +1,7 @@
+name: 'MccServer'
+type: module
+description: 'A module to accept requests for changes'
+core: 8.x
+package: 'Mcc'
+dependencies:
+  - drupal:toolbar

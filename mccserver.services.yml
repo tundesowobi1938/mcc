@@ -1,0 +1,7 @@
+services:
+  logger.channel.mccserver:
+    parent: logger.channel_base
+    arguments: ['mccserver']
+  mccserver.mccapi:
+    class: Drupal\mccserver\MccApiService
+    arguments: ['@config.factory', '@http_client_factory', '@serialization.json', '@entity.manager']

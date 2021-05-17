@@ -1,0 +1,4 @@
+mccserver:
+  target_site_name: "Local Server"
+  target_site_url: "http://drupal8test.docker.localhost/"
+  service_key: "MCC-QREWTCXBVERTGFHH"
