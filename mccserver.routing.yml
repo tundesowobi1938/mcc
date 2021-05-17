@@ -26,7 +26,7 @@ mccserver.mcc_config_form:
   path: '/admin/config/mcc/mccconfig'
   defaults:
     _form: '\Drupal\mccserver\Form\MccConfigForm'
-    _title: 'MCCConfigForm'
+    _title: 'Content Editors Changes Transfer Config'
   requirements:
     _permission: 'access administration pages'
   options:
@@ -35,7 +35,7 @@ mccserver.mcc_request_remote_changes_form:
   path: '/admin/config/mccserver/mccrequestremotechanges'
   defaults:
     _form: '\Drupal\mccserver\Form\MccRequestRemoteChangesForm'
-    _title: 'MccRequestRemoteChangesForm'
+    _title: 'Transfer Content Editor Changes'
   requirements:
     _permission: 'access administration pages'
   options:
@@ -47,7 +47,7 @@ mccserver.mcc_confirm_changes_form:
   path: '/admin/config/mccserver/mccconfirmchanges'
   defaults:
     _form: '\Drupal\mccserver\Form\MccConfirmChangesForm'
-    _title: 'MccConfirmChangesForm'
+    _title: 'Confirm Content Editor Changes'
   requirements:
     _permission: 'access administration pages'
   options:
